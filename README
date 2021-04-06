@@ -1,0 +1,63 @@
+          -. .-.   .-. .-.   .-. .-.   .
+            \   \ /   \   \ /   \   \ /
+           / \   \   / \   \   / \   \
+          ~   `-~ `-`   `-~ `-`   `-~ `-
+	        GENOME ANALYSIS
+		   (Genysis)
+
+
+Implementation of a genetic code analyzer
+
+The purpose is to implement a set of analyses which can provide a deep
+insight on the content of very large genetic codes.
+
+
+src -> all source codes
+bin -> all binaries
+
+Split / Split2
+
+First program take a file in FASTA format to prepare the data.
+Split data in many files, 1 file = 1 sequence.
+This adds pre-processing overhead but can drastically speed up the processing.
+Split2 is more efficient.
+
+Genysis
+
+The main program take 2 files in arg. It makes many analyses on the first sequence and
+compare them to each other.
+
+
+	*** COMPILE ***
+
+To compile the code use the following command:
+
+  $ make
+
+To clean binaries:
+
+  $ make clean
+
+To remove all data files, create by the split:
+
+  $ make clean_file
+
+
+	*** EXECUTE ***
+
+To split FASTA:
+
+  ./bin/split2 sequences.fasta
+
+To analyse:
+
+  ./bin/genysis LC528232.1 6XEZ_T
+
+
+
+If the fasta is located here . you can just use the bash script, it will compile, split fasta
+and run an analyses on this 2 files, sequences, LC528232.1 & 6XEZ_T
+
+  ./run.sh
+
+
