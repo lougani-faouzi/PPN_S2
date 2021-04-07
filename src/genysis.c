@@ -68,16 +68,25 @@ gene_map mapping(char *seq){
 //Transnforme l'ADN en ARN messager, seulement pour les genes de la séquence
 char **generate_ARN(gene_map gm,char* seq){
 
+  
   //Alloue de la memoire pour stocker les ARN dans un tableau
   char** ARN_m = (char **)malloc(gm->gene_counter*sizeof(char*));
+
+
   //Pour chaque ligne on alloue l'espace nécessaire pour stocker le gene en ARN
+  #pragma omp parallel
+  {
+  
+  #pragma omp for 
   for(int i=0; i < gm->gene_counter; i++)
     ARN_m[i] = (char *)malloc(gm->gene_end[i] - gm->gene_start[i] + 1 *sizeof(char));
 
-
+  
+  
   int pos=0;
   int pos_arn=0;
   //Pour chaque gene trouvé
+  #pragma omp for
   for(int i=0; i < gm->gene_counter; i++){
     //Init la pos au debut du gene
     pos=gm->gene_start[i];
@@ -94,9 +103,10 @@ char **generate_ARN(gene_map gm,char* seq){
 
       pos++;
       pos_arn++;
-    }
+                              }
   }
 
+  }
   return ARN_m;
 }
 
