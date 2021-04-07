@@ -121,8 +121,10 @@ void generate_prot(char *arn, char **codons){
   int symbols[nb_prot];
 
   printf("ARN_m : ");
-  
+  #pragma omp parallel
+  {
   //Parcours chaque codons de la sequence ARN
+  #pragma omp for 
   for(pos=0; pos<nb_prot; pos++){
   	//Recupere le codon dans prot
     prot[0]=arn[pos*3];
@@ -143,16 +145,19 @@ void generate_prot(char *arn, char **codons){
   }
   //Affichage en parcourant chaque proteine obtenu
   printf("\n(Short name) Protein : ");
+  
+  #pragma omp for 
   for(pos=0; pos<nb_prot; pos++)
     printf("%s ",codons[short_names[pos]]);
   printf("\n(Symbol) Protein : ");
+  
+  #pragma omp for 
   for(pos=0; pos<nb_prot; pos++)
     printf("%s ",codons[symbols[pos]]);
   printf("\n");
-
+  }
 }
 
-//
 void detect_mut(char *gene){
   //Position dans le gene
   int pos=0;
