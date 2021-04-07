@@ -246,20 +246,26 @@ void matching_rate(char *seq, char *seq2){
   int pos=0;
   //Parcours la plus grande sequence, de base en base
   while(seq[pos+mini-1]!='\0'){
+    #pragma omp parallel
+    {
+    #pragma omp for schedule(static){
     //Affiche le morceau de la grande sequence qui sera comparee 
     for(int i=0;i<mini;i++)
       printf("%c",seq[pos+i]);
-
+    }
+    
     printf("\n");
     //Affiche la petite sequence qui sera comparee
+    #pragma omp for schedule(static){
     for(int i=0;i<mini;i++)
       printf("%c",seq2[i]);
-
+    }
     //XOR caractere par caractere les deux chaines
     //Puis compte le nombre de bits a 1 total 
+    #pragma omp for schedule(static){
     for(int i=0;i<mini;i++)
       d += popcount( seq[pos+i] ^ seq2[i] );
-
+    }
     //Nombre total de bits -> 100% de bits differents
     //Nombre de bit a 1    -> y% de bits differents
     d = d * 100;
@@ -270,10 +276,9 @@ void matching_rate(char *seq, char *seq2){
 
     d=0;
     pos++;
+    }
   }
 }
-
-
 //
 int main(int argc, char **argv){
   //Check arg
