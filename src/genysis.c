@@ -174,7 +174,8 @@ void detect_mut(char *gene){
 
   //ON parcour le gene caractere par caractere
   while(gene[pos]!='\0'){
-
+   #pragma omp parallel sections{
+   #pragma omp section{
     //Si on croise un G ou un C, on incrémente l'occurrence
     if(gene[pos]=='G' || gene[pos]=='C'){
       if(occurrence==0)
@@ -183,9 +184,13 @@ void detect_mut(char *gene){
 
       occurrence++;
 
-    //Sinon
-    }else{
+                      
+    }
+    }
+    #pragma omp section{
+    if(gene[pos]!='G' || gene[pos]!='C'){
       //Si on a croisé une zone
+      
       if(occurrence>0){
         //Fin d'une zone
         printf("]");
@@ -209,6 +214,7 @@ void detect_mut(char *gene){
       }
 
     }
+    }
     //Affiche le caractere courant
     printf("%c",gene[pos]);
     //On passe au caractere suivant
@@ -228,7 +234,6 @@ void detect_mut(char *gene){
   printf("\n");
 
 }
-
 
 //Calcul le pourcentage de correspondance entre les 2 sequences
 //seq DOIT etre la plus grande
